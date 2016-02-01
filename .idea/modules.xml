@@ -3,8 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Comp-Maths-Reference-Android-App.iml" filepath="$PROJECT_DIR$/Comp-Maths-Reference-Android-App.iml" />
-      <module fileurl="file://$PROJECT_DIR$/CompMathsReference.iml" filepath="$PROJECT_DIR$/CompMathsReference.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
 </project>
