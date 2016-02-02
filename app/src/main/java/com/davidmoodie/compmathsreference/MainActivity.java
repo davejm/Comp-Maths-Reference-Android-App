@@ -1,12 +1,43 @@
 package com.davidmoodie.compmathsreference;
 
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.io.File;
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity {
+
+    public boolean deleteDataBase() {
+        File dbFile = new File("/data/data/com.davidmoodie.compmathsreference/databases/compmaths.db");
+        if (dbFile.exists()) {
+            return dbFile.delete();
+        }
+        return false;
+    }
+
+    public void doDataBase() {
+        DataBaseHelper myDbHelper;
+        myDbHelper = new DataBaseHelper(this);
+
+        try {
+            myDbHelper.createDataBase();
+            Log.d("TAG", "doDataBase: Created db");
+        } catch (IOException ioe) {
+            throw new Error("Unable to create database");
+        }
+
+        try {
+            myDbHelper.openDataBase();
+        } catch(SQLiteException sqle){
+            throw sqle;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        deleteDataBase();
+        doDataBase();
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
