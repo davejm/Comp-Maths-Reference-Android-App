@@ -1,9 +1,12 @@
 package com.davidmoodie.compmathsreference;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -31,6 +34,7 @@ public class ChaptersActivity extends AppCompatActivity {
             //textView.setText(topicID + " " + textView.getText());
         }
         populateChaptersListView();
+        setupListViewListener();
     }
 
     public void populateChaptersListView() {
@@ -45,5 +49,19 @@ public class ChaptersActivity extends AppCompatActivity {
             } while (cursor.moveToNext());
         }
         cursor.close();
+    }
+
+    private void setupListViewListener() {
+        lvChapters.setOnItemClickListener(
+                new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapter,
+                                            View item, int pos, long id) {
+                        Intent i = new Intent(getBaseContext(), ChapterContent.class);
+                        i.putExtra("chapterID", chapters.get(pos).getID());
+                        startActivity(i);
+                    }
+
+                });
     }
 }
