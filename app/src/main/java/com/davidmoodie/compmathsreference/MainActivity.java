@@ -7,13 +7,19 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     DataBaseHelper myDbHelper;
+    private ArrayList<String> topics;
+    private ArrayAdapter<String> topicsAdapter;
+    private ListView lvTopics;
 
     public boolean deleteDataBase() {
         File dbFile = new File("/data/data/com.davidmoodie.compmathsreference/databases/compmaths.db");
@@ -49,6 +55,13 @@ public class MainActivity extends AppCompatActivity {
 
         deleteDataBase();
         doDataBase();
+
+        lvTopics = (ListView) findViewById(R.id.lvTopics);
+        topics = new ArrayList<String>();
+        topicsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, topics);
+        lvTopics.setAdapter(topicsAdapter);
+        topics.add("First Item");
+        topics.add("Second Item");
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
