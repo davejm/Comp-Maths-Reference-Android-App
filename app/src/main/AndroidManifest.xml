@@ -21,6 +21,10 @@
         <activity
             android:name=".ChaptersActivity"
             android:label="@string/title_activity_chapters"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ChapterContent"
+            android:label="@string/title_activity_chapter_content"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
