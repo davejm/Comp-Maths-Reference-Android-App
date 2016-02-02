@@ -1,5 +1,6 @@
 package com.davidmoodie.compmathsreference;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
@@ -8,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -57,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
         deleteDataBase();
         doDataBase();
         populateTopicsListView();
+
+        setupListViewListener();
     }
 
     /** Queries topics table of database and returns list of topic names
@@ -85,6 +90,25 @@ public class MainActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
+
+    private void setupListViewListener() {
+        lvTopics.setOnItemClickListener(
+                new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapter,
+                                            View item, int pos, long id) {
+//                        // Remove the item within array at position
+//                        topics.remove(pos);
+//                        // Refresh the adapter
+//                        topicsAdapter.notifyDataSetChanged();
+
+                        Intent i = new Intent(getBaseContext(), ChaptersActivity.class);
+                        i.putExtra("extraData", "blah");
+                        startActivity(i);
+                    }
+
+                });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
