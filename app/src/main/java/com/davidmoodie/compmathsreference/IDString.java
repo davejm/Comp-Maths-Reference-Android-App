@@ -9,7 +9,7 @@ public class IDString {
 
     public IDString(int id, String string) {
         backingString = string;
-        id = id;
+        stringID = id;
     }
 
     public int getID() {

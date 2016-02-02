@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
 //                        topicsAdapter.notifyDataSetChanged();
 
                         Intent i = new Intent(getBaseContext(), ChaptersActivity.class);
-                        i.putExtra("extraData", "blah");
+                        i.putExtra("topicID", topics.get(pos).getID());
                         startActivity(i);
                     }
 
