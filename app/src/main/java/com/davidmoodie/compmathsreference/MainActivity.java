@@ -1,5 +1,6 @@
 package com.davidmoodie.compmathsreference;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -55,14 +56,27 @@ public class MainActivity extends AppCompatActivity {
 
         deleteDataBase();
         doDataBase();
+        populateTopicsListView();
+    }
 
+    /** Queries topics table of database and returns list of topic names
+     *
+     * @return topic names
+     */
+    public void populateTopicsListView() {
         lvTopics = (ListView) findViewById(R.id.lvTopics);
         topics = new ArrayList<String>();
         topicsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, topics);
         lvTopics.setAdapter(topicsAdapter);
-        topics.add("First Item");
-        topics.add("Second Item");
 
+        Cursor cursor = myDbHelper.selectQuery("SELECT name FROM topic;");
+        if (cursor.moveToFirst()) {
+            do {
+                topics.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+    }
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -71,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
