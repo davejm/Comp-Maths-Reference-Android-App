@@ -13,6 +13,8 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
+    DataBaseHelper myDbHelper;
+
     public boolean deleteDataBase() {
         File dbFile = new File("/data/data/com.davidmoodie.compmathsreference/databases/compmaths.db");
         if (dbFile.exists()) {
@@ -22,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void doDataBase() {
-        DataBaseHelper myDbHelper;
         myDbHelper = new DataBaseHelper(this);
 
         try {

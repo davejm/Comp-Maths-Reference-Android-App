@@ -1,6 +1,7 @@
 package com.davidmoodie.compmathsreference;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -128,6 +129,10 @@ public class DataBaseHelper extends SQLiteOpenHelper{
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+    }
+
+    public Cursor selectQuery(String rawQuery) {
+        return myDataBase.rawQuery(rawQuery, null);
     }
 
     // Add your public helper methods to access and get content from the database.
