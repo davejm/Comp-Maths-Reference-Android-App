@@ -21,8 +21,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     DataBaseHelper myDbHelper;
-    private ArrayList<String> topics;
-    private ArrayAdapter<String> topicsAdapter;
+    private ArrayList<IDString> topics;
+    private ArrayAdapter<IDString> topicsAdapter;
     private ListView lvTopics;
 
     public boolean deleteDataBase() {
@@ -70,14 +70,13 @@ public class MainActivity extends AppCompatActivity {
      */
     public void populateTopicsListView() {
         lvTopics = (ListView) findViewById(R.id.lvTopics);
-        topics = new ArrayList<String>();
-        topicsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, topics);
+        topics = new ArrayList<IDString>();
+        topicsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, topics);
         lvTopics.setAdapter(topicsAdapter);
-
-        Cursor cursor = myDbHelper.selectQuery("SELECT name FROM topic;");
+        Cursor cursor = myDbHelper.selectQuery("SELECT * FROM topic;");
         if (cursor.moveToFirst()) {
             do {
-                topics.add(cursor.getString(0));
+                topics.add(new IDString(cursor.getInt(0), cursor.getString(1)));
             } while (cursor.moveToNext());
         }
         cursor.close();
