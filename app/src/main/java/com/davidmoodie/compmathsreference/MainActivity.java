@@ -96,11 +96,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> adapter,
                                             View item, int pos, long id) {
-//                        // Remove the item within array at position
-//                        topics.remove(pos);
-//                        // Refresh the adapter
-//                        topicsAdapter.notifyDataSetChanged();
-
                         Intent i = new Intent(getBaseContext(), ChaptersActivity.class);
                         i.putExtra("topicID", topics.get(pos).getID());
                         startActivity(i);

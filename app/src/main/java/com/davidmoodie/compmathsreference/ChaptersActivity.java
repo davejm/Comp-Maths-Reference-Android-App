@@ -18,7 +18,7 @@ public class ChaptersActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             int topicID = extras.getInt("topicID");
-            textView.setText(topicID + " " + textView.getText());
+            //textView.setText(topicID + " " + textView.getText());
         }
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

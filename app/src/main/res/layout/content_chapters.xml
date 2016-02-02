@@ -12,13 +12,8 @@
     tools:context="com.davidmoodie.compmathsreference.ChaptersActivity"
     tools:showIn="@layout/activity_chapters">
 
-    <TextView
+    <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Chapters Activity"
-        android:id="@+id/textView"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:id="@+id/lvChapters" />
 </RelativeLayout>
