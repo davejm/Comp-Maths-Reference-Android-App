@@ -26,3 +26,10 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile 'us.feras.mdv:markdownview:1.1.0'
 }
+
+task generateMarkdown(type:Exec) {
+    workingDir file('src')
+    commandLine 'python', 'parse_markdown_to_db.py'
+}
+
+preBuild.dependsOn generateMarkdown
