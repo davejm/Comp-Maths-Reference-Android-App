@@ -54,7 +54,7 @@ def parse_markdown(md):
 
 def get_title(filename):
     """Retrieves title from a filename '##_Title_of_file'"""
-    return filename[3:].replace("_", " ").replace(".md", "")
+    return filename[3:].replace("_", " ")
 
 def insert_android_meta(cursor):
     cursor.execute('INSERT INTO android_metadata DEFAULT VALUES')
@@ -76,10 +76,12 @@ def generate_db(path, cursor):
     for topic in os.listdir(MD_PATH):
         insert_topic(cursor, get_title(topic))
         ch_dir = os.path.join(MD_PATH, topic)
-        for i, md in enumerate(os.listdir(ch_dir)):
-            title = get_title(md)
-            m = parse_markdown(os.path.join(ch_dir, md))
+
+        for i, chapter_folder in enumerate(os.listdir(ch_dir)):
+            title = get_title(chapter_folder)
+            m = parse_markdown(os.path.join(ch_dir, chapter_folder, "notes.md"))
             insert_chapter(cursor, topic_counter, i+1, title, m)
+
         topic_counter += 1
 
 
