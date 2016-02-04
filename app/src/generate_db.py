@@ -18,17 +18,11 @@ CREATE TABLE "topic" (
     `_id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
     `name`	TEXT
 );
-CREATE TABLE "chapter_question_answer" (
-    `_id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-    `chapter_question_id`	INTEGER NOT NULL,
-    `answer`	TEXT NOT NULL,
-    `answer_value_bool`	INTEGER NOT NULL,
-    FOREIGN KEY(`chapter_question_id`) REFERENCES chapter_question(_id)
-);
 CREATE TABLE "chapter_question" (
     `_id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
     `chapter_id`	INTEGER NOT NULL,
     `question`	TEXT NOT NULL,
+	`answer`	TEXT NOT NULL,
     FOREIGN KEY(`chapter_id`) REFERENCES chapter(_id)
 );
 CREATE TABLE "chapter" (
