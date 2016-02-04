@@ -26,9 +26,9 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
 }
 
-task generateMarkdown(type:Exec) {
+task generateDatabase(type:Exec) {
     workingDir file('src')
-    commandLine 'python', 'parse_markdown_to_db.py'
+    commandLine 'python', 'generate_db.py'
 }
 
-preBuild.dependsOn generateMarkdown
+preBuild.dependsOn generateDatabase
