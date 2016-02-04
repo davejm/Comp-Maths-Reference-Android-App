@@ -62,20 +62,31 @@ def insert_chapter(cursor, topic_id, chapter_num, title, text):
 def insert_topic(cursor, topic_name):
     cursor.execute("INSERT INTO topic (name) VALUES (?)", (topic_name,))
 
+def insert_question(cursor, chapter_id, question, answer):
+    cursor.execute("INSERT INTO chapter_question (chapter_id, question, answer) VALUES (?,?,?)",
+                   (chapter_id, question, answer))
+
 def generate_db(path, cursor):
     """Cycle through markdown folders and update database using cursor"""
     cursor.executescript(SCHEMA)
     insert_android_meta(cursor)
     topic_counter = 1
+    chapter_counter = 1
     for topic in os.listdir(MD_PATH):
         insert_topic(cursor, get_title(topic))
         ch_dir = os.path.join(MD_PATH, topic)
-
         for i, chapter_folder in enumerate(os.listdir(ch_dir)):
             title = get_title(chapter_folder)
             m = parse_markdown(os.path.join(ch_dir, chapter_folder, "notes.md"))
             insert_chapter(cursor, topic_counter, i+1, title, m)
-
+            if os.path.isdir(os.path.join(ch_dir, chapter_folder, "quiz")):
+                for question in os.listdir(os.path.join(ch_dir, chapter_folder, "quiz")):
+                    with open(os.path.join(ch_dir, chapter_folder, "quiz", question)) as q:
+                        # Oh lord this is ugly code
+                        md  = markdown2.markdown(q.read())
+                        ans = md[5]
+                        insert_question(cursor, chapter_counter, md, ans)
+            chapter_counter += 1				
         topic_counter += 1
 
 
