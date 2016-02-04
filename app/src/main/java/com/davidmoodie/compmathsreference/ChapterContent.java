@@ -35,7 +35,7 @@ public class ChapterContent extends AppCompatActivity {
         if (cursor.moveToFirst()) {
             return cursor.getString(0);
         }else {
-            return "### These aren't the markdowns you're looking for :(";
+            return "### These aren't the markdowns you're looking for\n There was an error retrieving requested chapter content";
         }
     }
 }
