@@ -4,13 +4,12 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.webkit.WebView;
 import android.widget.Toast;
-
-import us.feras.mdv.MarkdownView;
 
 public class ChapterContent extends AppCompatActivity {
     private DataBaseHelper myDbHelper = new DataBaseHelper(this);
-    private MarkdownView markdownView;
+    private WebView notesWebView;
     private int chapterID;
 
     @Override
@@ -27,16 +26,16 @@ public class ChapterContent extends AppCompatActivity {
         }
 
         myDbHelper.openDataBase();
-        markdownView = (MarkdownView) findViewById(R.id.markdownView);
-        markdownView.loadMarkdown(this.getChapterMarkdown(chapterID));
+        notesWebView = (WebView) findViewById(R.id.notesWebView);
+        notesWebView.loadData(getChapterHTML(chapterID), "text/html", null);
     }
 
-    public String getChapterMarkdown(int id) {
+    public String getChapterHTML(int id) {
         Cursor cursor = myDbHelper.selectQuery("SELECT markdown FROM chapter WHERE _id=" + id + " ;");
         if (cursor.moveToFirst()) {
             return cursor.getString(0);
         }else {
-            return "### These aren't the markdown your looking for :(";
+            return "### These aren't the markdowns you're looking for :(";
         }
     }
 }
