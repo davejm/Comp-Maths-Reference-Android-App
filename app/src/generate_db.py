@@ -1,8 +1,20 @@
 # Python3 script to generate database from markdown directory
-
 import os
 import sqlite3
 import markdown2 
+
+
+class cd:
+    """Context manager for changing the current working directory"""
+    def __init__(self, new_path):
+        self.new_path = os.path.expanduser(new_path)
+
+    def __enter__(self):
+        self.saved_path = os.getcwd()
+        os.chdir(self.new_path)
+
+    def __exit__(self, etype, value, traceback):
+        os.chdir(self.saved_path)
 
 CWD = os.getcwd()
 
@@ -50,44 +62,55 @@ def get_title(filename):
     """Retrieves title from a filename '##_Title_of_file'"""
     return filename[3:].replace("_", " ")
 
+
 def insert_android_meta(cursor):
+    """Insert android metadata into db"""
     cursor.execute('INSERT INTO android_metadata DEFAULT VALUES')
 
+
+def insert_topic(cursor, topic_name):
+    """Insert new topic record into db"""
+    cursor.execute("INSERT INTO topic (name) VALUES (?)", (topic_name,))
+
+    
 def insert_chapter(cursor, topic_id, chapter_num, title, text):
-    """Execute SQL update query on chapter table's markdown field"""
+    """Insert new chapter record into db"""
     cursor.execute('INSERT INTO chapter (topic_id, chapter_num, name, markdown) VALUES (?, ?, ?, ?)',
                    (topic_id, chapter_num, title, text))
 
 
-def insert_topic(cursor, topic_name):
-    cursor.execute("INSERT INTO topic (name) VALUES (?)", (topic_name,))
-
 def insert_question(cursor, chapter_id, question, answer):
+    """Insert new question record into db"""
     cursor.execute("INSERT INTO chapter_question (chapter_id, question, answer) VALUES (?,?,?)",
                    (chapter_id, question, answer))
 
+
 def generate_db(path, cursor):
-    """Cycle through markdown folders and update database using cursor"""
+    """Cycle through markdown folders and generate database"""
     cursor.executescript(SCHEMA)
     insert_android_meta(cursor)
-    topic_counter = 1
-    chapter_counter = 1
-    for topic in os.listdir(MD_PATH):
-        insert_topic(cursor, get_title(topic))
-        ch_dir = os.path.join(MD_PATH, topic)
-        for i, chapter_folder in enumerate(os.listdir(ch_dir)):
-            title = get_title(chapter_folder)
-            m = parse_markdown(os.path.join(ch_dir, chapter_folder, "notes.md"))
-            insert_chapter(cursor, topic_counter, i+1, title, m)
-            if os.path.isdir(os.path.join(ch_dir, chapter_folder, "quiz")):
-                for question in os.listdir(os.path.join(ch_dir, chapter_folder, "quiz")):
-                    with open(os.path.join(ch_dir, chapter_folder, "quiz", question)) as q:
-                        # Oh lord this is ugly code
-                        md  = markdown2.markdown(q.read())
-                        ans = md[5]
-                        insert_question(cursor, chapter_counter, md, ans)
-            chapter_counter += 1				
-        topic_counter += 1
+    topic_counter = 0
+    chapter_counter = 0
+    with cd(MD_PATH):
+        for topic in os.listdir():
+            insert_topic(cursor, get_title(topic))
+            topic_counter += 1
+            with cd(topic):
+                for i, chapter in enumerate(os.listdir()):
+                    with cd(chapter):
+                        title = get_title(chapter)
+                        m = parse_markdown("notes.md")
+                        insert_chapter(cursor, topic_counter, i+1, title, m)
+                        chapter_counter += 1	
+                        if os.path.isdir("quiz"):
+                            with cd("quiz"):
+                                for question in os.listdir():
+                                    with open(question) as q:
+                                        md  = markdown2.markdown(q.read())
+                                        ans = md[5]
+                                        insert_question(cursor, chapter_counter, md, ans)
+			
+
 
 
 if __name__ == '__main__':
