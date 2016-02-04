@@ -28,7 +28,14 @@ dependencies {
 
 task generateDatabase(type:Exec) {
     workingDir file('src')
-    commandLine 'python', 'generate_db.py'
+    String osName = System.getProperty("os.name").toLowerCase();
+    println "**** OS: " + osName + " ****"
+    if (osName.contains("windows")) {
+        commandLine 'python', 'generate_db.py'
+    } else {
+        commandLine 'python3', 'generate_db.py'
+    }
+
 }
 
 preBuild.dependsOn generateDatabase
