@@ -92,11 +92,11 @@ def generate_db(path, cursor):
     topic_counter = 0
     chapter_counter = 0
     with cd(MD_PATH):
-        for topic in os.listdir():
+        for topic in sorted(os.listdir()):
             insert_topic(cursor, get_title(topic))
             topic_counter += 1
             with cd(topic):
-                for i, chapter in enumerate(os.listdir()):
+                for i, chapter in enumerate(sorted(os.listdir())):
                     with cd(chapter):
                         title = get_title(chapter)
                         m = parse_markdown("notes.md")
@@ -104,7 +104,7 @@ def generate_db(path, cursor):
                         chapter_counter += 1	
                         if os.path.isdir("quiz"):
                             with cd("quiz"):
-                                for question in os.listdir():
+                                for question in sorted(os.listdir()):
                                     with open(question) as q:
                                         md  = markdown2.markdown(q.read())
                                         ans = md[5]
