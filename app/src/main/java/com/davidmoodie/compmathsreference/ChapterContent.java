@@ -1,5 +1,6 @@
 package com.davidmoodie.compmathsreference;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,10 +11,14 @@ import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class ChapterContent extends AppCompatActivity {
     private DataBaseHelper myDbHelper = new DataBaseHelper(this);
     private WebView notesWebView;
     private int chapterID;
+    private boolean hasQuiz = false;
+    private ArrayList<Integer> questionIDs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +36,23 @@ public class ChapterContent extends AppCompatActivity {
         myDbHelper.openDataBase();
         notesWebView = (WebView) findViewById(R.id.notesWebView);
         notesWebView.loadData(getChapterHTML(chapterID), "text/html", null);
+        questionIDs = getQuestionIDs();
+        Log.d("DEBUG", "onCreate: " + questionIDs.toString());
+        if (!questionIDs.isEmpty()) {
+            hasQuiz = true;
+        }
+    }
+
+    public ArrayList<Integer> getQuestionIDs() {
+        ArrayList<Integer> questionIDs = new ArrayList<>();
+        Cursor cursor = myDbHelper.selectQuery("SELECT _id FROM chapter_question WHERE chapter_id=" + chapterID + " ;");
+        if (cursor.moveToFirst()) {
+            do {
+                questionIDs.add(cursor.getInt(0));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return questionIDs;
     }
 
     public String getChapterHTML(int id) {
@@ -42,10 +64,20 @@ public class ChapterContent extends AppCompatActivity {
         }
     }
 
+    private void openChapterQuiz() {
+        Intent i = new Intent(getBaseContext(), QuestionActivity.class);
+        i.putExtra("chapterID", chapterID);
+        i.putExtra("questionIDs", questionIDs);
+        i.putExtra("questionIndex", 0);
+        startActivity(i);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_chapter, menu);
+        if (hasQuiz) {
+            getMenuInflater().inflate(R.menu.menu_chapter, menu);
+        }
         return true;
     }
 
@@ -58,7 +90,7 @@ public class ChapterContent extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_quiz) {
-            Log.d("DEBUG", "onOptionsItemSelected: QUIZ CLICKED");
+            openChapterQuiz();
             return true;
         }
 
