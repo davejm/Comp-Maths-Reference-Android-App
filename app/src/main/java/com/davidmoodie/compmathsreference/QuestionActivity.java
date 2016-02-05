@@ -37,11 +37,10 @@ public class QuestionActivity extends AppCompatActivity {
 
         myDbHelper.openDataBase();
         questionWebView = (WebView) findViewById((R.id.questionWebView));
-        getQuestionContent();
-        questionWebView.loadData(questionHTML, "text/html", null);
+        showQuestion();
     }
 
-    public void getQuestionContent() throws NullPointerException {
+    private void getQuestionContent() throws NullPointerException {
         Cursor cursor = myDbHelper.selectQuery("SELECT question, answer FROM chapter_question WHERE _id=" + questionID + " ;");
         if (cursor.moveToFirst()) {
             questionHTML = cursor.getString(0);
@@ -49,6 +48,11 @@ public class QuestionActivity extends AppCompatActivity {
         } else {
             throw new NullPointerException("Cannot find question content for question ID = " + questionID);
         }
+    }
+
+    private void showQuestion() {
+        getQuestionContent();
+        questionWebView.loadData(questionHTML, "text/html", null);
     }
 
 }
