@@ -78,19 +78,15 @@ public class QuestionActivity extends AppCompatActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonA:
-                //Toast.makeText(QuestionActivity.this, "buttonA", Toast.LENGTH_SHORT).show();
                 isAnswerCorrect("a");
                 break;
             case R.id.buttonB:
-                //Toast.makeText(QuestionActivity.this, "buttonB", Toast.LENGTH_SHORT).show();
                 isAnswerCorrect("b");
                 break;
             case R.id.buttonC:
-                //Toast.makeText(QuestionActivity.this, "buttonC", Toast.LENGTH_SHORT).show();
                 isAnswerCorrect("c");
                 break;
             case R.id.buttonD:
-                //Toast.makeText(QuestionActivity.this, "buttonD", Toast.LENGTH_SHORT).show();
                 isAnswerCorrect("d");
                 break;
         }
