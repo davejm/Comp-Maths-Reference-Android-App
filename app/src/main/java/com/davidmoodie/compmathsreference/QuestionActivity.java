@@ -47,6 +47,7 @@ public class QuestionActivity extends AppCompatActivity {
         if (cursor.moveToFirst()) {
             questionHTML = cursor.getString(0);
             answer = cursor.getString(1);
+            Toast.makeText(QuestionActivity.this, "Answer is: " + answer, Toast.LENGTH_SHORT).show();
         } else {
             throw new NullPointerException("Cannot find question content for question ID = " + questionID);
         }
@@ -57,19 +58,40 @@ public class QuestionActivity extends AppCompatActivity {
         questionWebView.loadData(questionHTML, "text/html", null);
     }
 
+    private void isAnswerCorrect(String ans) {
+        if ( ans.equalsIgnoreCase(answer) ) {
+            Toast.makeText(QuestionActivity.this, "Correct!", Toast.LENGTH_SHORT).show();
+            questionIndex++;
+            try {
+                questionID = questionIDs.get(questionIndex);
+                getQuestionContent();
+                showQuestion();
+            } catch (IndexOutOfBoundsException e) {
+                Toast.makeText(QuestionActivity.this, "No more questions to answer.", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        } else {
+            Toast.makeText(QuestionActivity.this, "Incorrect :(", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonA:
-                Toast.makeText(QuestionActivity.this, "buttonA", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(QuestionActivity.this, "buttonA", Toast.LENGTH_SHORT).show();
+                isAnswerCorrect("a");
                 break;
             case R.id.buttonB:
-                Toast.makeText(QuestionActivity.this, "buttonB", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(QuestionActivity.this, "buttonB", Toast.LENGTH_SHORT).show();
+                isAnswerCorrect("b");
                 break;
             case R.id.buttonC:
-                Toast.makeText(QuestionActivity.this, "buttonC", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(QuestionActivity.this, "buttonC", Toast.LENGTH_SHORT).show();
+                isAnswerCorrect("c");
                 break;
             case R.id.buttonD:
-                Toast.makeText(QuestionActivity.this, "buttonD", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(QuestionActivity.this, "buttonD", Toast.LENGTH_SHORT).show();
+                isAnswerCorrect("d");
                 break;
         }
     }
