@@ -4,9 +4,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.webkit.WebView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -53,20 +51,4 @@ public class QuestionActivity extends AppCompatActivity {
         }
     }
 
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.buttonA:
-                Toast.makeText(QuestionActivity.this, "buttonA", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.buttonB:
-                Toast.makeText(QuestionActivity.this, "buttonB", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.buttonC:
-                Toast.makeText(QuestionActivity.this, "buttonC", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.buttonD:
-                Toast.makeText(QuestionActivity.this, "buttonD", Toast.LENGTH_SHORT).show();
-                break;
-        }
-    }
 }
