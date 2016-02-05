@@ -17,6 +17,9 @@ public class QuestionActivity extends AppCompatActivity {
     private int questionID;
     private int questionIndex;
 
+    private String questionHTML;
+    private String answer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,15 +37,17 @@ public class QuestionActivity extends AppCompatActivity {
 
         myDbHelper.openDataBase();
         questionWebView = (WebView) findViewById((R.id.questionWebView));
-        questionWebView.loadData(getQuestionHTML(), "text/html", null);
+        getQuestionContent();
+        questionWebView.loadData(questionHTML, "text/html", null);
     }
 
-    public String getQuestionHTML() {
-        Cursor cursor = myDbHelper.selectQuery("SELECT question FROM chapter_question WHERE _id=" + questionID + " ;");
+    public void getQuestionContent() throws NullPointerException {
+        Cursor cursor = myDbHelper.selectQuery("SELECT question, answer FROM chapter_question WHERE _id=" + questionID + " ;");
         if (cursor.moveToFirst()) {
-            return cursor.getString(0);
+            questionHTML = cursor.getString(0);
+            answer = cursor.getString(1);
         } else {
-            return "### These aren't the markdowns you're looking for\n There was an error retrieving requested chapter content";
+            throw new NullPointerException("Cannot find question content for question ID = " + questionID);
         }
     }
 
