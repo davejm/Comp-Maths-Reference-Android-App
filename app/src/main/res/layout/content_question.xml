@@ -31,28 +31,32 @@
             android:layout_weight="0.25"
             android:layout_height="match_parent"
             android:text="A"
-            android:id="@+id/buttonA" />
+            android:id="@+id/buttonA"
+            android:onClick="onClick" />
 
         <Button
             android:layout_width="0dp"
             android:layout_weight="0.25"
             android:layout_height="match_parent"
             android:text="B"
-            android:id="@+id/buttonB" />
+            android:id="@+id/buttonB"
+            android:onClick="onClick" />
 
         <Button
             android:layout_width="0dp"
             android:layout_weight="0.25"
             android:layout_height="match_parent"
             android:text="C"
-            android:id="@+id/buttonC" />
+            android:id="@+id/buttonC"
+            android:onClick="onClick" />
 
         <Button
             android:layout_width="0dp"
             android:layout_weight="0.25"
             android:layout_height="match_parent"
             android:text="D"
-            android:id="@+id/buttonD" />
+            android:id="@+id/buttonD"
+            android:onClick="onClick" />
     </LinearLayout>
 
 </LinearLayout>
