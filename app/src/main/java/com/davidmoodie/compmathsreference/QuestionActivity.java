@@ -19,6 +19,7 @@ public class QuestionActivity extends AppCompatActivity {
     private int questionID;
     private int questionIndex;
 
+    private String linkStylesheet;
     private String questionHTML;
     private String answer;
 
@@ -38,6 +39,7 @@ public class QuestionActivity extends AppCompatActivity {
         }
 
         myDbHelper.openDataBase();
+        linkStylesheet = "<link rel=\"stylesheet\" type=\"text/css\" href=\"swiss.css\" />";
         questionWebView = (WebView) findViewById((R.id.questionWebView));
         showQuestion();
     }
@@ -45,7 +47,7 @@ public class QuestionActivity extends AppCompatActivity {
     private void getQuestionContent() throws NullPointerException {
         Cursor cursor = myDbHelper.selectQuery("SELECT question, answer FROM chapter_question WHERE _id=" + questionID + " ;");
         if (cursor.moveToFirst()) {
-            questionHTML = cursor.getString(0);
+            questionHTML = linkStylesheet + cursor.getString(0);
             answer = cursor.getString(1);
             Toast.makeText(QuestionActivity.this, "Answer is: " + answer, Toast.LENGTH_SHORT).show();
         } else {
@@ -55,7 +57,7 @@ public class QuestionActivity extends AppCompatActivity {
 
     private void showQuestion() {
         getQuestionContent();
-        questionWebView.loadData(questionHTML, "text/html", null);
+        questionWebView.loadDataWithBaseURL("file:///android_asset/", questionHTML, "text/html", "UTF-8", null);
     }
 
     private void isAnswerCorrect(String ans) {

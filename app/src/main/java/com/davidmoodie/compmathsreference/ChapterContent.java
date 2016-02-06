@@ -34,8 +34,10 @@ public class ChapterContent extends AppCompatActivity {
         }
 
         myDbHelper.openDataBase();
+        String linkStylesheet = "<link rel=\"stylesheet\" type=\"text/css\" href=\"swiss.css\" />";
+        String chapterHTML = linkStylesheet + getChapterHTML(chapterID);
         notesWebView = (WebView) findViewById(R.id.notesWebView);
-        notesWebView.loadData(getChapterHTML(chapterID), "text/html", null);
+        notesWebView.loadDataWithBaseURL("file:///android_asset/", chapterHTML, "text/html", "UTF-8", null);
         questionIDs = getQuestionIDs();
         Log.d("DEBUG", "onCreate: " + questionIDs.toString());
         if (!questionIDs.isEmpty()) {
